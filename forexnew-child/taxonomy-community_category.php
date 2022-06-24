@@ -1,0 +1,58 @@
+<?php
+/**
+ * The template for displaying archive pages
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package plant
+ */
+
+get_header(); ?>
+<div class="container box-all-broker">
+		<div class="row">
+		  <div class="col-md-3 cols-general cols-general-left">
+				<?php dynamic_sidebar( 'broker-left' ); ?>
+		  </div>
+			<div class="col-md-6">
+				<div class="main-header">
+					<?php
+						$taxonomy = 'broker_category';
+						$terms = get_the_terms( get_the_ID(), 'broker_category' );
+						if ( $terms && !is_wp_error( $terms ) ) :
+						?>
+						<div class="category-box">
+								<ul class="category-com">
+										<?php foreach ( $terms as $term ) { ?>
+												<li><a href="<?php echo get_term_link($term->slug, $taxonomy); ?>"><?php echo $term->name; ?></a></li>
+										<?php } ?>
+								</ul>
+					 </div>
+						<?php endif;?>
+				</div>
+				<div id="primary" class="content-area">
+					<main id="main" class="site-main">
+
+						<?php if ( have_posts() ) : ?>
+							<?php
+								while ( have_posts() ) : the_post();
+								get_template_part( 'template-parts/content','card-broker');
+								endwhile;
+							?>
+
+							<?php seed_posts_navigation(); ?>
+
+						<?php else : ?>
+
+							<?php get_template_part( 'template-parts/content', 'none' ); ?>
+
+						<?php endif; ?>
+
+					</main><!-- #main -->
+				</div><!-- #primary -->
+		  </div>
+			<div class="col-md-3 cols-general cols-general-right">
+				<?php dynamic_sidebar( 'general-right' ); ?>
+		  </div>
+		</div>
+</div><!--container-->
+<?php get_footer(); ?>
